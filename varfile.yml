@@ -1,0 +1,34 @@
+prometheus_targets:
+  node:  # This is a base file name. File is located in "{{ prometheus_config_dir }}/file_sd/<<BASENAME>>.yml"
+    - targets:              #
+        - 192.168.10.20:9100    # All this is a targets section in file_sd format
+      labels:               #
+        env: test           #
+
+prometheus_scrape_configs:
+  - job_name: "prometheus"    # Custom scrape job, here using `static_config`
+    file_sd_configs:
+      - files:
+          - "{{ prometheus_config_dir }}/file_sd/node.yml" # This line loads file created from  `prometheus_targets`
+
+  - job_name: "s1"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "192.168.10.21:9100"
+          - "192.168.10.21:9104"
+
+  - job_name: "s2"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "192.168.10.22:9100"
+  - job_name: "s3"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "192.168.10.24:9100"
+          - "192.168.10.24:9104"
+
+
+

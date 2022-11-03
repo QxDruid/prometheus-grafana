@@ -1,0 +1,23 @@
+---
+  - name: Install node_exporters
+    hosts:
+    - prometheus
+    - node_exporter
+    - db_exporter
+    roles:
+      - cloudalchemy.node_exporter
+  
+  - name: Install db_exporters
+    hosts:
+    - db_exporter
+    roles:
+      - cloudalchemy.mysqld_exporter
+    become:
+      yes
+  
+  - name:  Install prometheus server
+    hosts: prometheus
+    roles:
+      - cloudalchemy.prometheus
+    vars_files:
+      - varfile.yml
